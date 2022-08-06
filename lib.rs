@@ -57,4 +57,26 @@ mod tests {
             assert_eq!(count.render(), "\u{1b}[1A\u{1b}[2K100%");
         }
     }
+
+    #[test]
+    fn op_test() {
+        let mut count = Percent { percent: 0 };
+        let mut expected_percent = 0;
+        for i in 0..100 {
+            assert_eq!(count.render(), format!("\u{1b}[1A\u{1b}[2K{}%", expected_percent));
+
+            count.check(&|| -> bool {
+                if i % 10 == 0 {
+                    return true;
+                }
+
+                false
+            });
+
+            if i % 10 == 0 {
+                expected_percent += 1;
+            }
+
+        }
+    }
 }
